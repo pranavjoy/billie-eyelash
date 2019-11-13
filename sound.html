@@ -92,13 +92,11 @@
 
         window.requestAnimationFrame(draw);
 
-        if (mousePosition.x > 1350 && mousePosition.y < 1550 && mousePosition.y > 250 && mousePosition.y < 500) {
+        if (mousePosition.x > 1350 && mousePosition.y < 1550 && mousePosition.y > 250 && mousePosition.y < 500 && visibility % 2 === 1) {
             mySound.play();
         } else {
             mySound.stop();
         }
-
-
     }
 
     function onMouseMove(event){
