@@ -1,0 +1,75 @@
+<html>
+<head>
+    <style>
+
+        html, body {
+            height: 100%;
+            padding: 30px;
+        }
+
+        time {
+            display: block;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<time>
+    <canvas id="seconds" width="80" height="80"></canvas>
+    <canvas id="milliseconds" width="80" height="80"></canvas>
+</time>
+</body>
+
+<script>
+    let gameover = 0;
+    (function () {
+
+        function clear(ctx) {
+            ctx.clearRect(0, 0, 80, 80);
+        }
+
+        function setTrack(ctx) {
+            ctx.strokeStyle = 'hsla(2, 8%, 46%, 0.45)';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(36, 36, 27, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        function setTime(ctx, until, now, total) {
+            ctx.strokeStyle = 'hsl(2, 8%, 46%)';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.arc(36, 36, 27, Math.PI / -2, (Math.PI * 2) * ((until - now % total) / total) + (Math.PI / -2), false);
+            ctx.stroke();
+        }
+
+        let s = document.getElementById('seconds').getContext('2d');
+        let ms = document.getElementById('milliseconds').getContext('2d');
+        let grad = new Date();
+
+        function set() {
+            let today = new Date();
+            if (today.getSeconds() - grad.getSeconds() === 0) {
+                gameover = gameover + 1;
+            } else {
+                clear(s);
+                setTrack(s);
+                setTime(s, grad.getSeconds(), today.getSeconds(), 60);
+                clear(ms);
+                setTrack(ms);
+                setTime(ms, grad.getMilliseconds(), today.getMilliseconds(), 1000);
+            }
+            requestAnimationFrame(set);
+        }
+
+        if (gameover < 50) {
+            requestAnimationFrame(set);
+        } else {
+            console.log("Game Over");
+        }
+    })();
+
+</script>
+</html>

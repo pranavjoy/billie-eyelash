@@ -1,6 +1,11 @@
 <html>
 <head>
     <style>
+        time {
+            display: block;
+            text-align: center
+        }
+
 
         html {
             height: 100%;
@@ -11,6 +16,7 @@
         canvas {
             width : 100%;
             height : 100%;
+            cursor: url("black_circle.png"), auto;
         }
 
         #sources {
@@ -22,6 +28,8 @@
 
 <body>
 <div id="wrap">
+    <canvas id="minutes" width="80" height="80"></canvas>
+    <canvas id="seconds" width="80" height="80"></canvas>
     <canvas id="output"></canvas>
 </div>
 
@@ -73,6 +81,7 @@
         canvas.height = window.innerHeight;
     }
 
+
     function draw() {
         resize();
         context.drawImage(imgBase, 0, 0);
@@ -80,6 +89,14 @@
 
         context.beginPath();
         const position = mousePosition;
+
+        drawing = new Image();
+        drawing.src = "FlashlightFarket.png";
+
+        drawing.onmousemove = function () {
+            context.drawImage(drawing, 0, 0);
+        };
+
         if (visibility % 2 === 0) {
             console.log("It's alive")
     } else {
@@ -88,7 +105,8 @@
         context.clip();
         context.drawImage(imgXtra, 0, 0);
         context.restore();
-    }
+
+        }
 
         window.requestAnimationFrame(draw);
 
