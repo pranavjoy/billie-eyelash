@@ -90,13 +90,6 @@
         context.beginPath();
         const position = mousePosition;
 
-        drawing = new Image();
-        drawing.src = "FlashlightFarket.png";
-
-        drawing.onmousemove = function () {
-            context.drawImage(drawing, 0, 0);
-        };
-
         if (visibility % 2 === 0) {
             console.log("It's alive")
     } else {
