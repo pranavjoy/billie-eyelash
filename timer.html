@@ -25,6 +25,10 @@
     let gameover = 0;
     (function () {
 
+        let s = document.getElementById('seconds').getContext('2d');
+        let ms = document.getElementById('milliseconds').getContext('2d');
+        let grad = new Date();
+
         function clear(ctx) {
             ctx.clearRect(0, 0, 80, 80);
         }
@@ -45,9 +49,6 @@
             ctx.stroke();
         }
 
-        let s = document.getElementById('seconds').getContext('2d');
-        let ms = document.getElementById('milliseconds').getContext('2d');
-        let grad = new Date();
 
         function set() {
             let today = new Date();
