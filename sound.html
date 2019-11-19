@@ -1,17 +1,10 @@
 <html>
 <head>
     <style>
-        time {
-            display: block;
-            text-align: center
-        }
-
-
         html {
             height: 100vh;
             color: white;
         }
-
 
         canvas {
             width: 100%;
@@ -19,9 +12,6 @@
             cursor: url("black_circle.png"), auto;
         }
 
-        .timer {
-
-        }
         #sources {
             display: none;
         }
@@ -30,11 +20,6 @@
 </head>
 
 <body>
-
-<time>
-    <canvas id="seconds" class="timer" width="80" height="80"></canvas>
-    <canvas id="milliseconds" width="80" height="80"></canvas>
-</time>
 
 <div id="wrap">
     <canvas id="output"></canvas>
@@ -100,7 +85,7 @@
         const position = mousePosition;
 
         if (visibility % 2 === 0) {
-            console.log("It's alive")
+            timeElapsed = 0;
         } else {
             context.arc(position.x, position.y, 100, 0, 2 * Math.PI);
             context.clip();
@@ -112,7 +97,6 @@
 
         if (mousePosition.x > 1350 && mousePosition.y < 1550 && mousePosition.y > 250 && mousePosition.y < 500 && visibility % 2 === 1) {
             C_note.play();
-            //add to array
         } else {
             C_note.stop();
         }

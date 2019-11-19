@@ -23,7 +23,6 @@
     <canvas id="canvas1"></canvas>
     <canvas id="canvas2"></canvas>
     <canvas id="canvas3"></canvas>
-    <canvas id="canvas4"></canvas>
 </div>
 
 <div id="sources">
@@ -33,10 +32,29 @@
 </div>
 </body>
 <script>
+    errorNote = new sound("error.mp3");
+    successNote = new sound("success.wav");
+
+    function sound(src) {
+        this.sound = document.createElement("audio");
+        this.sound.src = src;
+        this.sound.setAttribute("preload", "auto");
+        this.sound.setAttribute("controls", "none");
+        this.sound.style.display = "none";
+        document.body.appendChild(this.sound);
+        this.play = function () {
+            this.sound.play();
+        }
+        this.stop = function () {
+            this.sound.pause();
+            this.sound.load();
+
+        }
+    }
+
     const canvas1 = document.querySelector("#canvas1");
     const canvas2 = document.querySelector("#canvas2");
     const canvas3 = document.querySelector("#canvas3");
-    const canvas4 = document.querySelector("#canvas4");
     const context1 = canvas1.getContext("2d");
     const context2 = canvas2.getContext("2d");
     const context3 = canvas3.getContext("2d");
@@ -124,8 +142,8 @@
         canvasid.height = window.innerHeight;
     }
 
-
     function draw1() {
+
         resize(canvas1);
         context1.beginPath();
         context1.drawImage(hallway, 0, 0);
@@ -141,7 +159,13 @@
             context1.drawImage(key, mousePosition.x, mousePosition.y);
             key_active = 1;
             cursor_status = false;
+            document.getElementById("canvas1").style.cursor = "none";
+            document.getElementById("canvas2").style.cursor = "none";
+            document.getElementById("canvas3").style.cursor = "none";
+        } else {
+            cursor_status = true;
         }
+
         setCursor(cursor_status);
         window.requestAnimationFrame(draw1);
     }
@@ -159,7 +183,13 @@
             context2.drawImage(locked, mousePosition.x, mousePosition.y);
             cursor_status = false;
             key_active = 2;
+            document.getElementById("canvas1").style.cursor = "none";
+            document.getElementById("canvas2").style.cursor = "none";
+            document.getElementById("canvas3").style.cursor = "none";
+        } else {
+            cursor_status = true;
         }
+
         context2.closePath();
         setCursor(cursor_status);
         window.requestAnimationFrame(draw2);
@@ -184,22 +214,29 @@
 
         if (context3.isPointInPath(mousePosition.x, mousePosition.y)) {
             context3.drawImage(locked, mousePosition.x, mousePosition.y);
-            document.getElementById('canvas3').style.cursor = "none";
             key_active = 2;
             cursor_status = false;
-
+            document.getElementById("canvas1").style.cursor = "none";
+            document.getElementById("canvas2").style.cursor = "none";
+            document.getElementById("canvas3").style.cursor = "none";
+        } else {
+            cursor_status = true;
         }
-        context2.closePath();
+
+        context3.closePath();
         setCursor(cursor_status);
         window.requestAnimationFrame(draw3);
-
     }
 
     function setCursor(cursor_status) {
         if (cursor_status === true) {
             document.getElementById("canvas1").style.cursor = "auto";
+            document.getElementById("canvas2").style.cursor = "auto";
+            document.getElementById("canvas3").style.cursor = "auto";
         } else {
             document.getElementById("canvas1").style.cursor = "none";
+            document.getElementById("canvas2").style.cursor = "none";
+            document.getElementById("canvas3").style.cursor = "none";
         }
     }
 
@@ -210,9 +247,14 @@
 
     function onclick() {
         if (key_active === 1) {
-            window.location.href = "sound.html";
+            console.log(key_active);
+            successNote.play();
+            setTimeout(function () {
+                window.location.href = "sound.html";
+            }, 1000);
         } else if (key_active === 2) {
             console.log("You may not enter now");
+            errorNote.play();
         } else {
             console.log("This is not clickable");
         }
