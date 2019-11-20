@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bedroom</title>
+    <style>
+        canvas {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
+
+        #sources {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<div id="stack">
+    <canvas id="canvas"></canvas>
+</div>
+
+<div id="sources">
+    <img alt=bedroom id="bedroom" crossorigin="anonymous" src="bedroom.jpg"/>
+    <img alt="flashlight" id="flashlight" crossorigin="anonymous" src="flashlight.png"/>
+</div>
+
+</body>
+
+<script>
+    let key_active = 0;
+
+    let rectangle = {
+        points: [{
+            x: 234,
+            y: 576
+        }, {
+            x: 1243,
+            y: 650
+        }, {
+            x: 1244,
+            y: 726
+        }, {
+            x: 238,
+            y: 666
+        }],
+    };
+
+    const canvas = document.querySelector("canvas");
+    const context = canvas.getContext("2d");
+    bedroom = document.getElementById('bedroom');
+    flashlight = document.getElementById('flashlight');
+
+    const mousePosition = {
+        x: 0,
+        y: 0
+    };
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function draw() {
+        resize();
+        context.beginPath();
+
+        context.drawImage(bedroom, 0, 0);
+        context.save();
+
+        let points = rectangle.points;
+        context.moveTo(points[0].x, points[0].y);
+
+        for (let i = 1; i < points.length; i++) {
+            context.lineTo(points[i].x, points[i].y);
+        }
+
+
+        if (context.isPointInPath(mousePosition.x, mousePosition.y)) {
+            context.drawImage(flashlight, mousePosition.x, mousePosition.y);
+            console.log("It's in");
+            document.getElementById("canvas").style.cursor = "none";
+            key_active = 1;
+        } else {
+            document.getElementById("canvas").style.cursor = "auto";
+            key_active = 0;
+        }
+
+        window.requestAnimationFrame(draw);
+    }
+
+    function onMouseMove(event) {
+        mousePosition.x = event.clientX;
+        mousePosition.y = event.clientY;
+    }
+
+    function onclick() {
+        if (key_active === 1) {
+            setTimeout(function () {
+                window.location.href = "sound.html";
+            }, 1000);
+        }
+    }
+
+    window.addEventListener("click", onclick);
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.requestAnimationFrame(draw);
+</script>
+</html>

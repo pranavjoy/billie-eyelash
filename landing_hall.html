@@ -142,10 +142,16 @@
         canvasid.height = window.innerHeight;
     }
 
-    function draw1() {
+    function draw() {
 
         resize(canvas1);
+        resize(canvas2);
+        resize(canvas3);
+
         context1.beginPath();
+        context2.beginPath();
+        context3.beginPath();
+
         context1.drawImage(hallway, 0, 0);
         context1.save();
 
@@ -155,56 +161,17 @@
             context1.lineTo(points1[i].x, points1[i].y);
         }
 
-        if (context1.isPointInPath(mousePosition.x, mousePosition.y)) {
-            context1.drawImage(key, mousePosition.x, mousePosition.y);
-            key_active = 1;
-            cursor_status = false;
-            document.getElementById("canvas1").style.cursor = "none";
-            document.getElementById("canvas2").style.cursor = "none";
-            document.getElementById("canvas3").style.cursor = "none";
-        } else {
-            cursor_status = true;
-        }
-
-        setCursor(cursor_status);
-        window.requestAnimationFrame(draw1);
-    }
-
-    function draw2() {
-        resize(canvas2);
-        context2.beginPath();
         let points2 = parallelogram2.points;
         context2.moveTo(points2[0].x, points2[0].y);
         for (let i = 1; i < points2.length; i++) {
             context2.lineTo(points2[i].x, points2[i].y);
         }
 
-        if (context2.isPointInPath(mousePosition.x, mousePosition.y)) {
-            context2.drawImage(locked, mousePosition.x, mousePosition.y);
-            cursor_status = false;
-            key_active = 2;
-            document.getElementById("canvas1").style.cursor = "none";
-            document.getElementById("canvas2").style.cursor = "none";
-            document.getElementById("canvas3").style.cursor = "none";
-        } else {
-            cursor_status = true;
-        }
-
-        context2.closePath();
-        setCursor(cursor_status);
-        window.requestAnimationFrame(draw2);
-
-    }
-
-    function draw3() {
-        resize(canvas3);
-        context3.beginPath();
         let points3 = parallelogram3.points;
         context3.moveTo(points3[0].x, points3[0].y);
         for (let i = 1; i < points3.length; i++) {
             context3.lineTo(points3[i].x, points3[i].y);
         }
-        context3.save();
 
         let points4 = parallelogram4.points;
         context3.moveTo(points4[0].x, points4[0].y);
@@ -212,20 +179,24 @@
             context3.lineTo(points4[i].x, points4[i].y);
         }
 
-        if (context3.isPointInPath(mousePosition.x, mousePosition.y)) {
+
+        if (context1.isPointInPath(mousePosition.x, mousePosition.y)) {
+            context1.drawImage(key, mousePosition.x, mousePosition.y);
+            key_active = 1;
+            cursor_status = false;
+        } else if (context2.isPointInPath(mousePosition.x, mousePosition.y)) {
+            context2.drawImage(locked, mousePosition.x, mousePosition.y);
+            cursor_status = false;
+            key_active = 2;
+        } else if (context3.isPointInPath(mousePosition.x, mousePosition.y)) {
             context3.drawImage(locked, mousePosition.x, mousePosition.y);
             key_active = 2;
             cursor_status = false;
-            document.getElementById("canvas1").style.cursor = "none";
-            document.getElementById("canvas2").style.cursor = "none";
-            document.getElementById("canvas3").style.cursor = "none";
         } else {
             cursor_status = true;
         }
-
-        context3.closePath();
         setCursor(cursor_status);
-        window.requestAnimationFrame(draw3);
+        window.requestAnimationFrame(draw);
     }
 
     function setCursor(cursor_status) {
@@ -238,6 +209,7 @@
             document.getElementById("canvas2").style.cursor = "none";
             document.getElementById("canvas3").style.cursor = "none";
         }
+        console.log(cursor_status);
     }
 
     function onMouseMove(event) {
@@ -250,7 +222,7 @@
             console.log(key_active);
             successNote.play();
             setTimeout(function () {
-                window.location.href = "sound.html";
+                window.location.href = "roomMain.html";
             }, 1000);
         } else if (key_active === 2) {
             console.log("You may not enter now");
@@ -262,9 +234,7 @@
 
     window.addEventListener("click", onclick);
     window.addEventListener("mousemove", onMouseMove);
-    window.requestAnimationFrame(draw1);
-    window.requestAnimationFrame(draw2);
-    window.requestAnimationFrame(draw3);
+    window.requestAnimationFrame(draw);
 </script>
 
 
