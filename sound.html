@@ -18,12 +18,68 @@
             display: none;
         }
 
+        #leftPlayButton {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 50%;
+        }
+
+        #nopoints {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 50%;
+            opacity: 100;
+        }
+
+        #onepoint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 50%;
+            opacity: 0;
+        }
+
+        #twopoints {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 50%;
+            opacity: 0;
+        }
+
+        #threepoints {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 50%;
+            opacity: 0;
+        }
+
+        #fourpoints {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 50%;
+            opacity: 0;
+        }
+
+        #fivepoints {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 50%;
+            opacity: 0;
+        }
+
     </style>
 </head>
 
 <body>
 
 <div id="stack">
+    <canvas id="leftButton"></canvas>
     <canvas id="obj1"></canvas>
     <canvas id="obj2"></canvas>
     <canvas id="obj3"></canvas>
@@ -32,6 +88,19 @@
     <canvas id="obj6"></canvas>
     <canvas id="obj7"></canvas>
     <canvas id="output"></canvas>
+</div>
+
+<div id="points">
+    <img id="nopoints" crossorigin="anonymous" src="static/images/nopoints.png"/>
+    <img id="onepoint" crossorigin="anonymous" src="static/images/onepoint.png"/>
+    <img id="twopoints" crossorigin="anonymous" src="static/images/twopoints.png"/>
+    <img id="threepoints" crossorigin="anonymous" src="static/images/threepoints.png"/>
+    <img id="fourpoints" crossorigin="anonymous" src="static/images/fourpoints.png"/>
+    <img id="fivepoints" crossorigin="anonymous" src="static/images/fivepoints.png"/>
+</div>
+
+<div>
+    <img id="leftPlayButton" crossorigin="anonymous" src="static/images/leftPlayButton.png" onclick="mainMusic()"/>
 </div>
 
 <div id="sources">
@@ -54,6 +123,7 @@
     const obj5 = document.getElementById("obj5");
     const obj6 = document.getElementById("obj6");
     const obj7 = document.getElementById("obj7");
+    const leftButton = document.getElementById("leftButton");
 
     const context = canvas.getContext("2d");
     const contextObj1 = obj1.getContext("2d");
@@ -63,14 +133,22 @@
     const contextObj5 = obj5.getContext("2d");
     const contextObj6 = obj6.getContext("2d");
     const contextObj7 = obj7.getContext("2d");
+    const contextLeftButton = leftButton.getContext("2d");
 
     sources = document.getElementById('sources'),
         imgBase = document.getElementById('base'),
         imgXtra = document.getElementById('xtra');
     circle = document.getElementById('circle');
+    leftPlayButton = document.getElementById("leftPlayButton")
 
-    C_note = new sound("sound.mp3");
-    flashlight = new sound("flashlight.mp3")
+    note1 = new sound("static/audio/note1.mp3");
+    note2 = new sound("static/audio/note2.mp3");
+    note3 = new sound("static/audio/note3.mp3");
+    note4 = new sound("static/audio/note4.mp3");
+    note5 = new sound("static/audio/note5.mp3");
+    note6 = new sound("static/audio/note6.mp3");
+    fullnote = new sound("static/audio/fullnote.mp3");
+    flashlight = new sound("static/audio/flashlight.mp3")
 
     function sound(src) {
         this.sound = document.createElement("audio");
@@ -88,6 +166,11 @@
         };
     }
 
+    function mainMusic() {
+        let button = document.getElementById("leftPlayButton");
+        //button.src = ""
+        fullnote.play();
+    }
     const mousePosition = {
         x: 0,
         y: 0
@@ -107,9 +190,13 @@
         resize(obj5);
         resize(obj6);
         resize(obj7);
+        resize(contextLeftButton);
 
         context.drawImage(imgBase, 0, 0);
         context.save();
+
+        contextLeftButton.drawImage(leftPlayButton, 0, 0);
+        contextLeftButton.save();
 
         contextObj1.arc(523, 430, 90, 0, 2 * Math.PI);
         contextObj2.arc(236, 603, 110, 0, 2 * Math.PI);
@@ -122,64 +209,65 @@
         context.beginPath();
         const position = mousePosition;
 
-        if (visibility % 2 === 0) {
-            let timeElapsed = 0;
-        } else {
+        if (visibility % 2 === 1 && mousePosition.x > 100 && mousePosition.y < 652) {
             context.arc(position.x, position.y, 100, 0, 2 * Math.PI);
-
             context.clip();
             context.drawImage(imgXtra, 0, 0);
             context.restore();
+        } else {
+            let timeElapsed = 0;
         }
 
         if (contextObj1.isPointInPath(mousePosition.x, mousePosition.y) && visibility % 2 === 1) {
-            //note1.play();
             size = music_played.length;
             if (music_played[size - 1] === "note1") {
                 console.log(music_played);
+
             } else {
                 music_played.push("note1");
+                note1.play();
             }
 
         } else if (contextObj2.isPointInPath(mousePosition.x, mousePosition.y) && visibility % 2 === 1) {
-            //note2.play();
+
             size = music_played.length;
             if (music_played[size - 1] === "note2") {
                 let x = 0;
             } else {
                 music_played.push("note2");
+                note2.play();
             }
         } else if (contextObj3.isPointInPath(mousePosition.x, mousePosition.y) && visibility % 2 === 1) {
-            //note3.play();
             size = music_played.length;
             if (music_played[size - 1] === "note3") {
                 let x = 0;
             } else {
                 music_played.push("note3");
+                note3.play();
             }
         } else if (contextObj4.isPointInPath(mousePosition.x, mousePosition.y) && visibility % 2 === 1) {
-            //note4.play();
             size = music_played.length;
             if (music_played[size - 1] === "note4") {
                 let x = 0;
             } else {
                 music_played.push("note4");
+                note4.play();
             }
         } else if (contextObj5.isPointInPath(mousePosition.x, mousePosition.y) && visibility % 2 === 1) {
-            //note5.play();
             size = music_played.length;
             if (music_played[size - 1] === "note5") {
                 let x = 0;
             } else {
                 music_played.push("note5");
+                note5.play();
             }
         } else if (contextObj6.isPointInPath(mousePosition.x, mousePosition.y) && visibility % 2 === 1) {
-            //note6.play();
             size = music_played.length;
             if (music_played[size - 1] === "note6") {
                 let x = 0;
             } else {
                 music_played.push("note6");
+                note6.play();
             }
         } else if (contextObj7.isPointInPath(mousePosition.x, mousePosition.y) && visibility % 2 === 1) {
             //note7.play();
@@ -190,6 +278,77 @@
         } else {
             console.log("No notes played");
         }
+
+        if (music_played[0] == "note1") {
+            document.getElementById("onepoint").style.opacity = 100;
+        } else if (music_played[0] === "note2" || music_played[0] === "note3" || music_played[0] === "note4" || music_played[0] === "note5" || music_played[0] === "note6") {
+            while (music_played.length > 0) {
+                music_played.pop();
+            }
+        } else {
+            let time_elapsed = 1;
+        }
+
+        if (music_played[1] == "note2") {
+            document.getElementById("twopoints").style.opacity = 100;
+        } else if (music_played[1] === "note1" || music_played[1] === "note3" || music_played[1] === "note4" || music_played[1] === "note5" || music_played[1] === "note6") {
+            while (music_played.length > 0) {
+                music_played.pop();
+            }
+            document.getElementById("onepoint").style.opacity = 0;
+            document.getElementById("twopoints").style.opacity = 0;
+            document.getElementById("threepoints").style.opacity = 0;
+            document.getElementById("fourpoints").style.opacity = 0;
+            document.getElementById("fivepoints").style.opacity = 0;
+        } else {
+            let time_elapsed = 1;
+        }
+
+        if (music_played[2] == "note3") {
+            document.getElementById("threepoints").style.opacity = 100;
+        } else if (music_played[2] === "note1" || music_played[2] === "note2" || music_played[2] === "note4" || music_played[2] === "note5" || music_played[2] === "note6") {
+            while (music_played.length > 0) {
+                music_played.pop();
+            }
+            document.getElementById("onepoint").style.opacity = 0;
+            document.getElementById("twopoints").style.opacity = 0;
+            document.getElementById("threepoints").style.opacity = 0;
+            document.getElementById("fourpoints").style.opacity = 0;
+            document.getElementById("fivepoints").style.opacity = 0;
+        } else {
+            let time_elapsed = 1;
+        }
+
+        if (music_played[3] == "note4") {
+            document.getElementById("fourpoints").style.opacity = 100;
+        } else if (music_played[3] === "note1" || music_played[3] === "note2" || music_played[3] === "note3" || music_played[3] === "note5" || music_played[3] === "note6") {
+            while (music_played.length > 0) {
+                music_played.pop();
+            }
+            document.getElementById("onepoint").style.opacity = 0;
+            document.getElementById("twopoints").style.opacity = 0;
+            document.getElementById("threepoints").style.opacity = 0;
+            document.getElementById("fourpoints").style.opacity = 0;
+            document.getElementById("fivepoints").style.opacity = 0;
+        } else {
+            let time_elapsed = 1;
+        }
+
+        if (music_played[4] == "note5") {
+            document.getElementById("fivepoints").style.opacity = 100;
+        } else if (music_played[4] === "note1" || music_played[4] === "note2" || music_played[4] === "note4" || music_played[4] === "note3" || music_played[4] === "note6") {
+            while (music_played.length > 0) {
+                music_played.pop();
+            }
+            document.getElementById("onepoint").style.opacity = 0;
+            document.getElementById("twopoints").style.opacity = 0;
+            document.getElementById("threepoints").style.opacity = 0;
+            document.getElementById("fourpoints").style.opacity = 0;
+            document.getElementById("fivepoints").style.opacity = 0;
+        } else {
+            let time_elapsed = 1;
+        }
+
         window.requestAnimationFrame(draw);
 
     }
@@ -202,7 +361,7 @@
     function onclick() {
         flashlight.play();
         visibility += 1;
-        if (visibility % 2 == 1) {
+        if (visibility % 2 === 1) {
             cursor_status = false;
             setCursor(cursor_status);
         } else {
@@ -222,6 +381,7 @@
             document.getElementById("obj6").style.cursor = "auto";
             document.getElementById("obj6").style.cursor = "auto";
             document.getElementById("obj7").style.cursor = "auto";
+            document.getElementById("leftButton").style.cursor = "auto";
         } else {
             document.getElementById("output").style.cursor = "none";
             document.getElementById("obj1").style.cursor = "none";
@@ -231,7 +391,8 @@
             document.getElementById("obj5").style.cursor = "none";
             document.getElementById("obj6").style.cursor = "none";
             document.getElementById("obj6").style.cursor = "none";
-            document.getElementById("obj7").style.cursor = "auto";
+            document.getElementById("obj7").style.cursor = "none";
+            document.getElementById("leftButton").style.cursor = "none";
         }
         console.log(cursor_status);
     }
