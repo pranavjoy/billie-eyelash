@@ -15,6 +15,7 @@
         #sources {
             display: none;
         }
+
     </style>
 </head>
 <body class="main">
@@ -29,6 +30,7 @@
     <img alt=hallway id="hallway" crossorigin="anonymous" src="hallway2.jpeg"/>
     <img alt=hallway id="locked" crossorigin="anonymous" src="locked.png"/>
     <img alt=key id="key" crossorigin="anonymous" src="key.png"/>
+    <img alt=key id="box" crossorigin="anonymous" src="box.png"/>
 </div>
 </body>
 <script>
@@ -55,16 +57,18 @@
     const canvas1 = document.querySelector("#canvas1");
     const canvas2 = document.querySelector("#canvas2");
     const canvas3 = document.querySelector("#canvas3");
+
     const context1 = canvas1.getContext("2d");
     const context2 = canvas2.getContext("2d");
     const context3 = canvas3.getContext("2d");
+
     sources = document.getElementById('sources');
     hallway = document.getElementById('hallway');
     locked = document.getElementById('locked');
+    key = document.getElementById('key');
 
     let cursor_status = true;
 
-    key = document.getElementById('key');
     let key_active = 0;
 
     let parallelogram1 = {
