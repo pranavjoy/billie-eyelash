@@ -150,6 +150,7 @@
     fullnote = new sound("static/audio/fullnote.mp3");
     flashlight = new sound("static/audio/flashlight.mp3")
 
+
     function sound(src) {
         this.sound = document.createElement("audio");
         this.sound.src = src;
@@ -182,6 +183,9 @@
     }
 
     function draw() {
+        if (music_played.length === 5) {
+            moveOn();
+        }
         resize(canvas);
         resize(obj1);
         resize(obj2);
@@ -397,6 +401,11 @@
         console.log(cursor_status);
     }
 
+    function moveOn() {
+        window.location.href = "roomMain.html";
+    }
+
+    fullnote.play();
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("click", onclick);
     window.requestAnimationFrame(draw);
